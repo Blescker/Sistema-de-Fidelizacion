@@ -1,0 +1,120 @@
+/* ==========================================================
+   Diseño base: en PC panel con menú lateral; en celular "app"
+   con barra superior y menú inferior. Mismo HTML, cambia el CSS.
+   ========================================================== */
+:root {
+  --brand: #4F46E5;          /* se sobreescribe con el color del negocio */
+  --brand-dark: #312E81;
+  --bg: #F3F4F8;
+  --sidebar-w: 250px;
+  --bottom-h: 64px;
+}
+
+body {
+  background: var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary { --bs-btn-bg: var(--brand); --bs-btn-border-color: var(--brand); --bs-btn-hover-bg: var(--brand-dark); --bs-btn-hover-border-color: var(--brand-dark); --bs-btn-active-bg: var(--brand-dark); --bs-btn-disabled-bg: var(--brand); --bs-btn-disabled-border-color: var(--brand); }
+.text-brand { color: var(--brand) !important; }
+.bg-brand { background: var(--brand) !important; }
+
+/* ---------- Sidebar (solo PC) ---------- */
+.app-sidebar {
+  position: fixed; inset: 0 auto 0 0; width: var(--sidebar-w);
+  background: var(--brand-dark); color: #fff; display: flex; flex-direction: column;
+  padding: 18px 14px; z-index: 1030;
+}
+.app-sidebar .brand { font-weight: 800; font-size: 18px; padding: 4px 10px 18px; display: flex; gap: 10px; align-items: center; }
+.app-sidebar .brand small { display: block; font-weight: 400; font-size: 12px; opacity: .7; }
+.app-sidebar .nav-link {
+  color: rgba(255,255,255,.8); border-radius: 10px; padding: 10px 12px; display: flex; gap: 12px; align-items: center;
+}
+.app-sidebar .nav-link:hover { background: rgba(255,255,255,.08); color: #fff; }
+.app-sidebar .nav-link.active { background: rgba(255,255,255,.16); color: #fff; font-weight: 600; }
+.app-sidebar .nav-link i { font-size: 18px; }
+.app-sidebar .user { margin-top: auto; border-top: 1px solid rgba(255,255,255,.15); padding-top: 14px; }
+
+/* ---------- Barra superior (celular) ---------- */
+.app-topbar {
+  background: var(--brand-dark); color: #fff; position: sticky; top: 0; z-index: 1020;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.app-topbar h1 { font-size: 17px; margin: 0; font-weight: 700; }
+.app-topbar small { opacity: .75; font-size: 12px; }
+
+/* ---------- Menú inferior (celular) ---------- */
+.app-bottomnav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 1030; background: #fff;
+  border-top: 1px solid #E5E7EB; display: flex; padding-bottom: env(safe-area-inset-bottom);
+}
+.app-bottomnav a, .app-bottomnav button {
+  flex: 1; border: 0; background: none; text-decoration: none; color: #6B7280;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 8px 0 10px; font-size: 11.5px;
+}
+.app-bottomnav i { font-size: 21px; }
+.app-bottomnav .active { color: var(--brand); font-weight: 700; }
+
+/* ---------- Contenido ---------- */
+.app-main { padding: 16px 16px calc(var(--bottom-h) + 24px + env(safe-area-inset-bottom)); }
+.page-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.page-head h2 { font-size: 22px; font-weight: 800; margin: 0; }
+
+@media (min-width: 992px) {
+  .app-content { margin-left: var(--sidebar-w); }
+  .app-main { padding: 28px 32px; max-width: 1200px; }
+}
+
+/* ---------- Tarjetas ---------- */
+.card { border: 0; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.stat-card .label { color: #6B7280; font-size: 13px; }
+.stat-card .value { font-size: 28px; font-weight: 800; }
+.stat-card .icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; background: #EEF2FF; color: var(--brand); }
+
+/* Lista de ítems (sucursales, usuarios) que sirve igual en PC y celular */
+.item-list .item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #F0F1F4; }
+.item-list .item:last-child { border-bottom: 0; }
+.item-list .item.inactive { opacity: .55; }
+.item-list .grow { flex: 1; min-width: 0; }
+.item-list .title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-list .meta { color: #6B7280; font-size: 13px; }
+.avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; background: #EEF2FF; color: var(--brand); flex-shrink: 0; }
+
+/* Formularios cómodos en el celular */
+.form-control, .form-select { border-radius: 10px; padding: .65rem .85rem; }
+@media (max-width: 991.98px) {
+  .form-control, .form-select { font-size: 16px; } /* evita zoom en iPhone */
+  .modal-dialog { margin: 0; max-width: none; min-height: 100%; display: flex; align-items: flex-end; }
+  .modal-content { border-radius: 20px 20px 0 0; border: 0; }
+}
+
+/* Botón con "cargando" */
+.btn.is-loading { position: relative; color: transparent !important; pointer-events: none; }
+.btn.is-loading::after {
+  content: ""; position: absolute; inset: 0; margin: auto; width: 18px; height: 18px;
+  border: 2px solid #fff; border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Botón flotante "+" en celular */
+.fab {
+  position: fixed; right: 18px; bottom: calc(var(--bottom-h) + 18px + env(safe-area-inset-bottom)); z-index: 1025;
+  width: 56px; height: 56px; border-radius: 50%; font-size: 26px; display: grid; place-items: center;
+  box-shadow: 0 6px 18px rgba(79,70,229,.4);
+}
+
+/* ---------- Toasts ---------- */
+#toasts { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--bottom-h) + 20px + env(safe-area-inset-bottom)); z-index: 2000; display: flex; flex-direction: column; gap: 8px; align-items: center; width: max-content; max-width: calc(100% - 32px); }
+@media (min-width: 992px) { #toasts { left: auto; right: 24px; transform: none; bottom: 24px; align-items: flex-end; } }
+.app-toast { background: #111827; color: #fff; padding: 12px 18px; border-radius: 12px; font-size: 14px; box-shadow: 0 6px 20px rgba(0,0,0,.2); opacity: 0; transform: translateY(10px); transition: .25s; }
+.app-toast.show { opacity: 1; transform: none; }
+.app-toast-success { background: #065F46; }
+.app-toast-error { background: #991B1B; }
+
+/* ---------- Login ---------- */
+.auth-wrap { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: linear-gradient(160deg, var(--brand-dark), var(--brand)); }
+.auth-wrap .btn-primary { --bs-btn-bg: var(--brand); --bs-btn-border-color: var(--brand); }
+.auth-card { width: 100%; max-width: 400px; border-radius: 20px; }
